@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from .forms import RegisterForm
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+import re
 
 
-def fieldTaken(fieldName):
-    return User.objects.filter(fieldName=fieldName).exists()
+def validate_email(email):
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+    if re.fullmatch(regex, email):
+        return True
+    else:
+        return False
 
 
 def register(request):
@@ -26,12 +33,24 @@ def register(request):
                 error = 'This email is already taken. Try again.'
             if usernameTaken:
                 error = 'This username is already taken. Try again.'
-                
+
+            # walidacja hasla
             if not emailTaken and not usernameTaken:
-                return render(request, 'register.html', {'form': RegisterForm(), 'data': [emailTaken, usernameTaken]})
+                try:
+                    validate_password(password2)
+                except ValidationError as e:
+                    return render(request, 'register.html', {'form': RegisterForm(), 'passError': e.messages})
+                else:
+                    # walidacja maila
+                    emailValid = validate_email(email)
+                    if emailValid:
+                        pass
+                    else:
+                        error = f'{email} is not a valid email. Try again.'
         else:
             error = 'Passwords did not match. Try again.'
+
         return render(request, 'register.html', {'form': RegisterForm(), 'error': error})
-        # walidacja hasla
-        # walidacja maila
+
         # wyslanie potwierdzenia na maila
+        # stworzenie usera
