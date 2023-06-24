@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import re
+from verify_email.email_handler import send_verification_email
 
 
 def validate_email(email):
@@ -44,13 +45,16 @@ def register(request):
                     # walidacja maila
                     emailValid = validate_email(email)
                     if emailValid:
-                        pass
+                        # wyslanie potwierdzenia na maila
+                        # stworzenie usera
+                        form = RegisterForm(request.POST)
+                        if form.is_valid():
+                            inactive_user = send_verification_email(
+                                request, form)
+                            return render(request, 'register.html', {'form': RegisterForm()})
                     else:
                         error = f'{email} is not a valid email. Try again.'
         else:
             error = 'Passwords did not match. Try again.'
 
         return render(request, 'register.html', {'form': RegisterForm(), 'error': error})
-
-        # wyslanie potwierdzenia na maila
-        # stworzenie usera
