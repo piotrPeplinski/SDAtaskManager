@@ -1,12 +1,10 @@
 <h1>Home</h1>
 
-
 {% if user.is_authenticated %}
 <h3>Welcome back {{user}}</h3>
 <a href="{% url 'logoutUser' %}">Log out</a>
+<a href="{% url 'tasks' %}">Tasks</a>
 {% else %}
 <a href="{% url 'register' %}">Register</a>
 <a href="{% url 'logUser' %}">Log in</a>
 {% endif %}
-    
-
