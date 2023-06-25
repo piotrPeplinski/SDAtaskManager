@@ -9,8 +9,10 @@ def home(request):
 
 
 def tasks(request):
-    userTasks = Task.objects.filter(user=request.user)
-    return render(request, 'tasks.html', {'tasks': userTasks})
+    current = Task.objects.filter(user=request.user, completeDate__isnull=True)
+    completed = Task.objects.filter(
+        user=request.user, completeDate__isnull=False)
+    return render(request, 'tasks.html', {'current': current, 'completed': completed})
 
 
 def create(request):
@@ -26,3 +28,7 @@ def create(request):
         else:
             error = 'Something went wrong. Try again.'
             return render(request, 'create.html', {'form': TaskForm(), 'error': error})
+        
+
+def detail(request):
+    pass
