@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Edit task: {{task.title}}</h1>
+
+{% if error %}
+    <h3>{{error}}</h3>
+{% endif %}
+    
+<form action="{% url 'detail' task.id %}" method="post">
+    {{form}}
+    {% csrf_token %}
+    <button type="submit">Save</button>
+</form>
+
+{% endblock content %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 # Create your views here.
@@ -28,7 +28,19 @@ def create(request):
         else:
             error = 'Something went wrong. Try again.'
             return render(request, 'create.html', {'form': TaskForm(), 'error': error})
-        
 
-def detail(request):
-    pass
+
+def detail(request, taskId):
+    task = get_object_or_404(Task, id=taskId)
+    if request.method == 'GET':
+        form = TaskForm(instance=task)
+        return render(request, 'detail.html', {'task': task, 'form': form})
+    else:
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks')
+        else:
+            error = 'Something went wrong. Try again.'
+            form = TaskForm(instance=task)
+            return render(request, 'detail.html', {'task': task, 'form': form, 'error': error})
