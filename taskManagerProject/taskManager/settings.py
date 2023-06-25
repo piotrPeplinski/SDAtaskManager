@@ -137,3 +137,7 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
 LOGIN_URL = 'logUser'
+
+
+MEDIA_ROOT =  BASE_DIR / 'media'
+MEDIA_URL = '/media/'
