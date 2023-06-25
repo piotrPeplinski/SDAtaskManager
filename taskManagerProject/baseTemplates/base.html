@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Task Manager
+        {% endblock title %}
+    </title>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <h3>Welcome back {{user}}</h3>
+    <a href="{% url 'logoutUser' %}">Log out</a>
+    <a href="{% url 'tasks' %}">Tasks</a>
+    <a href="{% url 'create' %}">Create Task</a>
+    {% else %}
+    <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'logUser' %}">Log in</a>
+    {% endif %}
+    <a href="{% url 'home' %}">Home</a>
+    {% block content %}
+
+    {% endblock content %}
+
+</body>
+
+</html>

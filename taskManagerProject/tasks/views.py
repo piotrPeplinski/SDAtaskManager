@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .models import Task
 from .forms import TaskForm
 # Create your views here.
@@ -23,3 +23,6 @@ def create(request):
             task.user = request.user
             task.save()
             return redirect('tasks')
+        else:
+            error = 'Something went wrong. Try again.'
+            return render(request, 'create.html', {'form': TaskForm(), 'error': error})

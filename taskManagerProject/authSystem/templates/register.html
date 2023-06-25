@@ -1,24 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
 <h1>Register</h1>
 
 {% if passError %}
 <h3>Password validation failed</h3>
 <ul>
-    
+
     {% for message in passError %}
-        <li>{{message}}</li>
+    <li>{{message}}</li>
     {% endfor %}
-        
+
 </ul>
 {% endif %}
-    
 
 
 {% if error %}
-    <h3>{{error}}</h3>
+<h3>{{error}}</h3>
 {% endif %}
-    
+
 <form action="{% url 'register' %}" method="post">
     {{form}}
     {% csrf_token %}
     <button type="submit">Register</button>
 </form>
+
+{% endblock content %}
